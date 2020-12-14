@@ -1,5 +1,51 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    margin: auto;
+}
+
 .app-main {
     
-    background-color: rgb(200, 200, 200);
+    /*background-color: rgb(200, 200, 200); */
+    min-width: 100%;
+}
+
+.app-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.app-footer div {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.newapp-form {
+    display: flex;
+    justify-content: flex-start;
+   
+}
+
+.newapp-form Button {
+    margin-left: 20px;
+}
+
+.div-buttons {
+    display: flex;
+    justify-content: flex-end;
 
 }
+
+.div-buttons Button {
+    margin-left: 20px;
+}
+
+.description {
+    background-color: lightgray;
+    border-radius: 5px;
+    padding: 10px;
+}
+

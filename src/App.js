@@ -4,6 +4,11 @@ import './App.css';
 import { AppInfoReducer, AppInfoContext, AppInfoActions } from './context/AppInfoContext';
 import Applications from './layout/Applications';
 
+import FacebookIcon from '@material-ui/icons/Facebook';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import WebIcon from '@material-ui/icons/Web';
+
 const App = () => {
 
     const [state, dispatch] = useReducer(AppInfoReducer, {apps: []});
@@ -14,7 +19,7 @@ const App = () => {
         <AppInfoContext.Provider value={{ state, ...appInfoContext }}> 
         <div className="app">
             <header className="app-header">
-            
+                <h1>My App Monitor</h1>
             </header>
 
             <div className="app-main">
@@ -25,8 +30,14 @@ const App = () => {
 
             </div>
 
-            <footer className="app">
-
+            <footer className="app-footer">
+                <p>Made with {`<3`} by Vinícius Machado</p>
+                <div>
+                    <WebIcon fontSize="large"/>
+                    <LinkedInIcon fontSize="large" />
+                    <InstagramIcon fontSize="large" />
+                    <FacebookIcon fontSize="large" />
+                </div>
             </footer>
 
         </div>
