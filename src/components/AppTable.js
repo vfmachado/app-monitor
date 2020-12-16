@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText, TextField, Button } from '@material-ui/core';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Toolbar } from '@material-ui/core';
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import AddIcon from '@material-ui/icons/AddRounded';
 
 import './AppTable.css';
+import RequestModal from './RequestModal';
 
 const AppTable = () => {
 
-    const [requestModal, setRequestModal] = useState(false);
+    const [openRequestModal, setOpenRequestModal] = useState(false);
 
     const showRequestModal = (value) => {
-        setRequestModal(value);
+        setOpenRequestModal(value);
     }
 
     return (
@@ -68,31 +69,10 @@ const AppTable = () => {
             </TableContainer>
             <br />
 
-
-            <Dialog open={requestModal} onClose={() => showRequestModal(false)} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">New Request</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Fill the fields bellow.
-              </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Email Address"
-                        type="email"
-                        fullWidth
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => showRequestModal(false)} color="primary">
-                        Cancel
-              </Button>
-                    <Button onClick={() => showRequestModal(false)} color="primary">
-                        Subscribe
-              </Button>
-                </DialogActions>
-            </Dialog>
+            <RequestModal 
+                open={openRequestModal} 
+                close={() => showRequestModal(false)}
+            />          
 
         </Paper>
 

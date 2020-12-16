@@ -8,6 +8,7 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import WebIcon from '@material-ui/icons/Web';
+import { GitHub } from '@material-ui/icons';
 
 const App = () => {
 
@@ -32,11 +33,12 @@ const App = () => {
 
             <footer className="app-footer">
                 <p>Made with {`<3`} by Vinícius Machado</p>
-                <div>
+                <div className="social">
                     <WebIcon fontSize="large"/>
                     <LinkedInIcon fontSize="large" />
                     <InstagramIcon fontSize="large" />
                     <FacebookIcon fontSize="large" />
+                    <GitHub fontSize="large"/>
                 </div>
             </footer>
 

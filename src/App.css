@@ -13,14 +13,20 @@
 }
 
 .app-footer {
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-size: 18px;
 }
 
 .app-footer div {
     display: flex;
     justify-content: space-evenly;
+}
+
+.app-footer svg {
+    padding: 10px;
 }
 
 .newapp-form {
