@@ -7,23 +7,35 @@ import AddIcon from '@material-ui/icons/AddRounded';
 
 import './AppTable.css';
 import RequestModal from './RequestModal';
+import { AppInfoContext } from '../context/AppInfoContext';
 
-const AppTable = () => {
+const AppTable = ({appInfo}) => {
 
+    const { addTest } = React.useContext(AppInfoContext);
+    
     const [openRequestModal, setOpenRequestModal] = useState(false);
+
 
     const showRequestModal = (value) => {
         setOpenRequestModal(value);
     }
 
+
+    const addRequest = (data) => {
+        showRequestModal(false);
+        addTest(appInfo.name, data);
+    }
+
+
     return (
 
         <Paper width={1}>
             <Toolbar>
-                <h2>Covid Osório</h2>
+                <h2>{appInfo.name}</h2>
                 <AddIcon className="add-request" onClick={() => showRequestModal(true)} />
             </Toolbar>
             <TableContainer>
+                
                 <Table>
 
                     <TableHead>
@@ -38,32 +50,18 @@ const AppTable = () => {
                     </TableHead>
 
                     <TableBody>
-                        <TableRow>
-                            <TableCell>Front-end</TableCell>
-                            <TableCell>http://covid19.saude.osorio.rs.gov.br</TableCell>
-                            <TableCell>Status 200</TableCell>
-                            <TableCell>10 min</TableCell>
-                            <TableCell>OK</TableCell>
-                            <TableCell><ArrowDropDownIcon /></TableCell>
-                        </TableRow>
-
-                        <TableRow>
-                            <TableCell>Back-end</TableCell>
-                            <TableCell>http://covid19.saude.osorio.rs.gov.br:3003</TableCell>
-                            <TableCell>Status 200 JSON: Server Answering</TableCell>
-                            <TableCell>10 min</TableCell>
-                            <TableCell>OK</TableCell>
-                            <TableCell><ArrowDropDownIcon /></TableCell>
-                        </TableRow>
-
-                        <TableRow>
-                            <TableCell>Back-end</TableCell>
-                            <TableCell>http://covid19.saude.osorio.rs.gov.br:3003/getUser/123</TableCell>
-                            <TableCell>Status 200 JSON: User Data</TableCell>
-                            <TableCell>10 min</TableCell>
-                            <TableCell>ERROR</TableCell>
-                            <TableCell><ArrowDropDownIcon /></TableCell>
-                        </TableRow>
+                        
+                        {appInfo.tests.map(test => {
+                            return (<TableRow key={test.name}>
+                                <TableCell>{test.name}</TableCell>
+                                <TableCell>{test.address}</TableCell>
+                                <TableCell>{test.expectedAnswer}</TableCell>
+                                <TableCell>{test.timer}</TableCell>
+                                <TableCell>{test.status}</TableCell>
+                                <TableCell><ArrowDropDownIcon /></TableCell>
+                            </TableRow>);
+                        })}
+        
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -72,6 +70,7 @@ const AppTable = () => {
             <RequestModal 
                 open={openRequestModal} 
                 close={() => showRequestModal(false)}
+                onSubmit={(data) => addRequest(data)}
             />          
 
         </Paper>

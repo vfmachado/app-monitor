@@ -5,9 +5,9 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText, T
 const RequestModal = (props) => {
 
     const [name, setName] = useState('');
-    const [httpAddress, setHttpAddress] = useState('');
+    const [address, setAddress] = useState('');
     const [expectedAnswer, setExpectedAnswer] = useState('');
-    const [timer, setTime] = useState('');
+    const [timer, setTimer] = useState(0);
 
     return (
         <Dialog open={props.open} onClose={props.close} aria-labelledby="form-dialog-title">
@@ -23,6 +23,7 @@ const RequestModal = (props) => {
                         label="Name"
                         type="text"
                         fullWidth
+                        onChange={e => setName(e.target.value)}
                     />
 
                     <TextField
@@ -31,6 +32,7 @@ const RequestModal = (props) => {
                         label="HTTP Address"
                         type="text"
                         fullWidth
+                        onChange={e => setAddress(e.target.value)}
                     />
 
                     
@@ -42,6 +44,7 @@ const RequestModal = (props) => {
                         fullWidth
                         multiline={true}
                         rows={5}                   
+                        onChange={e => setExpectedAnswer(e.target.value)}
                     />
 
                     <TextField
@@ -50,6 +53,7 @@ const RequestModal = (props) => {
                         label="Time between successful requests"
                         type="number"
                         fullWidth
+                        onChange={e => setTimer(e.target.value)}
                     />
 
                 </DialogContent>
@@ -57,7 +61,7 @@ const RequestModal = (props) => {
                     <Button onClick={props.close} color="primary">
                         Cancel
               </Button>
-                    <Button onClick={() => {console.log("Creating request.")}} color="primary">
+                    <Button onClick={() => props.onSubmit({name, address, expectedAnswer, timer})} color="primary">
                         Create
               </Button>
                 </DialogActions>

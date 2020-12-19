@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Button, TextField } from '@material-ui/core';
 import { Delete, Save, ImportExport } from '@material-ui/icons';
@@ -15,6 +15,22 @@ const Applications = () => {
 
     const [appName, setAppName] = useState('');
     const [newAppForm, setNewAppForm] = useState(false);
+
+
+    useEffect(() => {
+    
+        function timeout() {
+            setTimeout(function () {
+                
+                console.log("Checking for requests")
+
+                timeout();
+            }, 5000);
+        }
+
+        //timeout();
+    }, [])
+
 
     const showNewAppForm = () => {
         if (!newAppForm)    
@@ -47,7 +63,7 @@ const Applications = () => {
 
             <br/><br/> 
             
-            { globalState.apps.map(app => (<AppTable />)) }
+            { globalState.apps.map(app => (<AppTable key={app.name} appInfo={app} />)) }
 
             <br/><br/><br/>
 
