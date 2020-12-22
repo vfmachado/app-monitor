@@ -30,6 +30,13 @@ export const AppInfoReducer = (prevState, action) => {
                 ...prevState, 
                 apps: [...appsData],
             };
+
+        case 'CLEAR':
+            return {
+                ...prevState,
+                apps: [],                
+            };
+
         default:
             return prevState;
     }
@@ -46,6 +53,10 @@ export const AppInfoActions = (dispatch) => ({
 
     addTest: async (appName, testData) => {
         dispatch({type: 'NEW_TEST', appName, testData})
+    },
+
+    clearAll: async() => {
+        dispatch({type: 'CLEAR'});
     }
 
 });

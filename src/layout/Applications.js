@@ -7,23 +7,36 @@ import { AppInfoContext } from '../context/AppInfoContext';
 import AppTable from '../components/AppTable';
 
 import './../App.css';
+import Axios from 'axios';
 
 const Applications = () => {
 
-    const { newApp } = React.useContext(AppInfoContext);
+    const { newApp, clearAll } = React.useContext(AppInfoContext);
     const globalState = React.useContext(AppInfoContext).state;
 
     const [appName, setAppName] = useState('');
     const [newAppForm, setNewAppForm] = useState(false);
 
 
-    useEffect(() => {
-    
-        function timeout() {
-            setTimeout(function () {
-                
-                console.log("Checking for requests")
+    const runTests = async () => {
+        console.log("Checking for requests")
 
+        globalState.apps.forEach(app => {
+            app.tests.forEach(async test => {
+                let response = await Axios.get(test.address);
+                console.log(response.status);
+            })
+        });
+
+    }
+
+    useEffect(() => {
+
+        Axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+
+        function timeout() {
+            setTimeout(async function () {
+                await runTests();
                 timeout();
             }, 5000);
         }
@@ -33,7 +46,7 @@ const Applications = () => {
 
 
     const showNewAppForm = () => {
-        if (!newAppForm)    
+        if (!newAppForm)
             setNewAppForm(true);
     }
 
@@ -44,36 +57,42 @@ const Applications = () => {
 
     return (
         <>
-           
+
             { !newAppForm &&
+                <Button variant="outlined" color="primary"
+                    onClick={showNewAppForm}
+                >
+                    Add App
+                </Button>
+            }
+
             <Button variant="outlined" color="primary"
-                onClick={showNewAppForm}
-            >
-                Add App
+                    onClick={runTests}
+                >
+                    Run All Tests
             </Button>
-            }
-            
+
             { newAppForm &&
-            <div className="newapp-form">
-                <TextField id="standard-basic" label="App Name" onChange={e => setAppName(e.target.value)} />
-                <Button variant="outlined" color="primary" onClick={() => {newApp(appName); closeNewAppForm()}}>Confirm</Button>
-                <Button variant="outlined" color="secondary" onClick={closeNewAppForm}>Cancel</Button>
-            </div>
+                <div className="newapp-form">
+                    <TextField id="standard-basic" label="App Name" onChange={e => setAppName(e.target.value)} />
+                    <Button variant="outlined" color="primary" onClick={() => { newApp(appName); closeNewAppForm() }}>Confirm</Button>
+                    <Button variant="outlined" color="secondary" onClick={closeNewAppForm}>Cancel</Button>
+                </div>
             }
 
-            <br/><br/> 
-            
-            { globalState.apps.map(app => (<AppTable key={app.name} appInfo={app} />)) }
+            <br /><br />
 
-            <br/><br/><br/>
+            { globalState.apps.map(app => (<AppTable key={app.name} appInfo={app} />))}
+
+            <br /><br /><br />
 
             <div className="div-buttons">
-                <Button 
-                    variant="contained" 
+                <Button
+                    variant="contained"
                     color="primary"
                     size="small"
-                    startIcon={<ImportExport />} 
-                    onClick={() => {}}
+                    startIcon={<ImportExport />}
+                    onClick={() => { }}
                 >
                     Import Data
                 </Button>
@@ -87,12 +106,12 @@ const Applications = () => {
                     Save
                 </Button>
 
-                <Button 
-                    variant="contained" 
-                    color="secondary" 
+                <Button
+                    variant="contained"
+                    color="secondary"
                     size="small"
-                    startIcon={<Delete />} 
-                    onClick={() => {}}
+                    startIcon={<Delete />}
+                    onClick={() => { clearAll() }}
                 >
                     Clear All
                 </Button>
