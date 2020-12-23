@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@material-ui/core';
-import { Delete, Save, ImportExport, ThumbUpAlt, ThumbDown, ThumbUp } from '@material-ui/icons';
+import { Delete, Save, ImportExport, Loop, HighlightOff, Cached } from '@material-ui/icons';
 
 import { AppInfoContext } from '../context/AppInfoContext';
 import AppTable from '../components/AppTable';
@@ -38,30 +38,19 @@ const Applications = () => {
         }
     }
 
-
-    const startFunction = () => {
-
-        setTestIntervalID(setInterval(async function () {
-    
-            console.log("Timeout")
-            await runTests();
-            
-        }, 5000))
-    }
-
-
-    const stopFunction = () => {
-        clearInterval(testIntervalID);
-    }
-    
-
     useEffect(() => {
     
-        console.log("Running Changed", running)
-        if (running)
-            startFunction();
-        else
-            stopFunction();
+        if (running) {
+            setTestIntervalID(setInterval(async function () {
+    
+                console.log("Timeout")
+                await runTests();
+                
+            }, 5000));
+        
+        } else {
+            clearInterval(testIntervalID);
+        }
       
     }, [running]);
 
@@ -112,17 +101,21 @@ const Applications = () => {
 
             {
             running ? 
-            <Button variant="outlined" color="primary"
-            onClick={() => setRunning(false)}
-            startIcon={<ThumbUp />}>
-                Running
-            </Button>
+                <Button 
+                    variant="outlined" 
+                    color="primary"
+                    onClick={() => setRunning(false)}
+                    startIcon={<Loop />}>
+                    Running -> Stop
+                </Button>
             :
-            <Button variant="outlined" color="primary"
-            onClick={() => setRunning(true)}
-            startIcon={<ThumbDown />}>
-                Stopped
-            </Button>
+                <Button 
+                    variant="outlined" 
+                    color="primary"
+                    onClick={() => setRunning(true)}
+                    startIcon={<HighlightOff />}>
+                    Stopped -> Run
+                </Button>
             }
 
 
@@ -156,8 +149,26 @@ const Applications = () => {
                     color="primary"
                     size="small"
                     startIcon={<Save />}
+                    onClick={() => {
+                        localStorage.setItem('fritzen-app-monitor', JSON.stringify(globalState));
+                        alert("Your data was save locally.")
+                    }}
                 >
                     Save
+                </Button>
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    startIcon={<Cached />}
+                    onClick={() => {
+                        const data = localStorage.getItem('fritzen-app-monitor');
+                        if (data) setAll(data);
+                        else    alert("Nothing to load. Save the configuration first");
+                    }}
+                >
+                    Load
                 </Button>
 
                 <Button
