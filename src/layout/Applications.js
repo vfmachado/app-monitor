@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Button, TextField } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@material-ui/core';
 import { Delete, Save, ImportExport } from '@material-ui/icons';
 
 import { AppInfoContext } from '../context/AppInfoContext';
@@ -11,11 +11,30 @@ import Axios from 'axios';
 
 const Applications = () => {
 
-    const { newApp, clearAll } = React.useContext(AppInfoContext);
+    const { newApp, setAll, clearAll } = React.useContext(AppInfoContext);
     const globalState = React.useContext(AppInfoContext).state;
 
     const [appName, setAppName] = useState('');
     const [newAppForm, setNewAppForm] = useState(false);
+
+    const [importData, setImportData] = useState('');
+    const [importModal, setImportModal] = useState(false);
+
+    const checkTestAnswer = (test, response) => {
+
+        switch (test.expectedType) {
+            case 'data':
+                console.log(test.expectedAnswer, response.data);
+                return test.expectedAnswer == response.data;
+            case 'status':
+                console.log(test.expectedAnswer, response.status);
+                return test.expectedAnswer == response.status;
+            default:
+                return false;
+        }
+
+
+    }
 
 
     const runTests = async () => {
@@ -24,7 +43,12 @@ const Applications = () => {
         globalState.apps.forEach(app => {
             app.tests.forEach(async test => {
                 let response = await Axios.get(test.address);
-                console.log(response.status);
+                //console.log(response.status);
+
+                console.log("TESTING", test.name);
+
+                console.log(checkTestAnswer(test, response));
+
             })
         });
 
@@ -32,7 +56,7 @@ const Applications = () => {
 
     useEffect(() => {
 
-        Axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+        /* Axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded'; */
 
         function timeout() {
             setTimeout(async function () {
@@ -67,9 +91,9 @@ const Applications = () => {
             }
 
             <Button variant="outlined" color="primary"
-                    onClick={runTests}
-                >
-                    Run All Tests
+                onClick={runTests}
+            >
+                Run All Tests
             </Button>
 
             { newAppForm &&
@@ -92,7 +116,7 @@ const Applications = () => {
                     color="primary"
                     size="small"
                     startIcon={<ImportExport />}
-                    onClick={() => { }}
+                    onClick={() => { setImportModal(true) }}
                 >
                     Import Data
                 </Button>
@@ -120,6 +144,36 @@ const Applications = () => {
                 {JSON.stringify(globalState, null, 4)}
             </pre>
 
+
+            <Dialog open={importModal} onClose={() => setImportModal(false)} aria-labelledby="form-dialog-title" fullWidth={true}
+                maxWidth={"lg"}>
+                <DialogTitle id="form-dialog-title">JSON DATA</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Paste your JSON code. All current data will be replaced
+                    </DialogContentText>
+                </DialogContent>
+
+                <TextField
+                    id="answer"
+                    type="textarea"
+                    style={{ margin: "20px" }}
+                    multiline={true}
+                    rows={10}
+                    onChange={e => setImportData(e.target.value)}
+                />
+
+                <DialogActions>
+                    <Button onClick={() => setImportModal(false)} color="primary">
+                        Close
+                    </Button>
+
+                    <Button onClick={() => { setAll(importData); setImportModal(false); }} color="primary">
+                        Import
+                    </Button>
+                </DialogActions>
+
+            </Dialog>
         </>
     );
 }

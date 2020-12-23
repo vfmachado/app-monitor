@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 
-import { Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText, TextField, Button } from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText, TextField, Button, Select, InputLabel, MenuItem } from '@material-ui/core';
 
 const RequestModal = (props) => {
 
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
+    const [expectedType, setExpectedType] = useState('')
     const [expectedAnswer, setExpectedAnswer] = useState('');
     const [timer, setTimer] = useState(0);
 
@@ -36,6 +37,17 @@ const RequestModal = (props) => {
                     />
 
                     
+                    <InputLabel id="expected-type">Type</InputLabel>
+                    <Select
+                        labelId="expected-type"
+                        value={expectedType}
+                        onChange={e => setExpectedType(e.target.value)}
+                        >
+                        <MenuItem value={"status"}>Status</MenuItem>
+                        <MenuItem value={"data"}>Data</MenuItem>
+                        
+                    </Select>
+
                     <TextField
                         margin="dense"
                         id="answer"
@@ -61,7 +73,7 @@ const RequestModal = (props) => {
                     <Button onClick={props.close} color="primary">
                         Cancel
               </Button>
-                    <Button onClick={() => props.onSubmit({name, address, expectedAnswer, timer})} color="primary">
+                    <Button onClick={() => props.onSubmit({name, address, expectedType, expectedAnswer, timer})} color="primary">
                         Create
               </Button>
                 </DialogActions>

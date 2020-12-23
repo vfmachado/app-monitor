@@ -31,6 +31,10 @@ export const AppInfoReducer = (prevState, action) => {
                 apps: [...appsData],
             };
 
+        case 'IMPORT':
+            const data = JSON.parse(action.data);
+            return {...prevState, ...data};
+
         case 'CLEAR':
             return {
                 ...prevState,
@@ -52,10 +56,14 @@ export const AppInfoActions = (dispatch) => ({
     },
 
     addTest: async (appName, testData) => {
-        dispatch({type: 'NEW_TEST', appName, testData})
+        dispatch({type: 'NEW_TEST', appName, testData});
     },
 
-    clearAll: async() => {
+    setAll: async (data) => {
+        dispatch({type: 'IMPORT', data});
+    },
+
+    clearAll: async () => {
         dispatch({type: 'CLEAR'});
     }
 
