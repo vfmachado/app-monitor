@@ -73,7 +73,7 @@ const RequestModal = (props) => {
                     <Button onClick={props.close} color="primary">
                         Cancel
               </Button>
-                    <Button onClick={() => props.onSubmit({name, address, expectedType, expectedAnswer, timer})} color="primary">
+                    <Button onClick={() => props.onSubmit({name, address, expectedType, expectedAnswer, timer, lastExec: null, status: 'Waiting test'})} color="primary">
                         Create
               </Button>
                 </DialogActions>

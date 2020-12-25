@@ -44,6 +44,7 @@ const AppTable = ({appInfo}) => {
                             <TableCell>Request</TableCell>
                             <TableCell>Expected Answer</TableCell>
                             <TableCell>Timer</TableCell>
+                            <TableCell>Last Exec</TableCell>
                             <TableCell>Status</TableCell>
                             <TableCell></TableCell>
                         </TableRow>
@@ -57,6 +58,7 @@ const AppTable = ({appInfo}) => {
                                 <TableCell>{test.address}</TableCell>
                                 <TableCell>{test.expectedAnswer}</TableCell>
                                 <TableCell>{test.timer}</TableCell>
+                                <TableCell>{test.lastExec}</TableCell>
                                 <TableCell>{test.status}</TableCell>
                                 <TableCell><ArrowDropDownIcon /></TableCell>
                             </TableRow>);
