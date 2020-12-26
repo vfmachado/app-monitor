@@ -31,6 +31,35 @@ export const AppInfoReducer = (prevState, action) => {
                 apps: [...appsData],
             };
 
+        case 'UPDATE_TEST':
+
+            const testData = action.testData;
+
+            //find APP
+            let appIndex;
+            for (appIndex = 0; appIndex < prevState.apps.length; appIndex++) {
+                if (prevState.apps[appIndex].name === action.appName)
+                    break;
+            }
+            const appsCopyData = prevState.apps;
+            const app = appsCopyData[appIndex];
+
+            //find TEST
+            let testIndex;
+            for (testIndex = 0; testIndex < app.tests.length; testIndex++) {
+                if (app.tests[testIndex].name === action.testName)
+                    break;
+            }
+
+            const oldTestData = appsCopyData[appIndex].tests[testIndex];
+            appsCopyData[appIndex].tests[testIndex] = { ...oldTestData, ...testData };
+
+            return {
+                ...prevState,
+                apps: [...appsCopyData],
+            }
+
+
         case 'IMPORT':
             const data = JSON.parse(action.data);
             return {...prevState, ...data};
@@ -57,6 +86,10 @@ export const AppInfoActions = (dispatch) => ({
 
     addTest: async (appName, testData) => {
         dispatch({type: 'NEW_TEST', appName, testData});
+    },
+
+    updateTest: async (appName, testName, testData) => {
+        dispatch({type: 'UPDATE_TEST', appName, testName, testData});
     },
 
     setAll: async (data) => {

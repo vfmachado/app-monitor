@@ -12,7 +12,7 @@ import ImportJsonModal from '../components/ImportJsonModal';
 
 const Applications = () => {
 
-    const { newApp, setAll, clearAll } = React.useContext(AppInfoContext);
+    const { newApp, updateTest, setAll, clearAll } = React.useContext(AppInfoContext);
     const globalState = React.useContext(AppInfoContext).state;
 
     const [appName, setAppName] = useState('');
@@ -46,7 +46,7 @@ const Applications = () => {
                 console.log("Timeout")
                 await runTests();
                 
-            }, 5000));
+            }, 10_000));
         
         } else {
             clearInterval(testIntervalID);
@@ -61,11 +61,27 @@ const Applications = () => {
         for (const app of globalState.apps) {
             
             for (const test of app.tests) {
-                let response = await Axios.get(test.address);
                 
-                console.log("TESTING", test.name);
-                console.log(checkTestAnswer(test, response));
+                console.log("TESTING", app, test.name);
 
+                let currTime = new Date();
+
+                if (!test.lastExec)
+                    test.lastExec = new Date(0);
+
+                let diff = currTime.getTime() - test.lastExec.getTime();
+                diff = diff/(1000 * 60);
+
+                if (diff >= test.timer) {
+                    let response = await Axios.get(test.address);
+                    
+                    if (checkTestAnswer(test, response)) {
+                        updateTest(app.name, test.name, {lastExec: currTime, status: "OK"});
+                    } else { 
+                        updateTest(app.name, test.name, {status: "ERROR"});
+                    }
+
+                }
             }
         }
     }

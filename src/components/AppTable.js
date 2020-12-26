@@ -58,7 +58,7 @@ const AppTable = ({appInfo}) => {
                                 <TableCell>{test.address}</TableCell>
                                 <TableCell>{test.expectedAnswer}</TableCell>
                                 <TableCell>{test.timer}</TableCell>
-                                <TableCell>{test.lastExec}</TableCell>
+                                <TableCell>{test.lastExec?.toISOString()}</TableCell>
                                 <TableCell>{test.status}</TableCell>
                                 <TableCell><ArrowDropDownIcon /></TableCell>
                             </TableRow>);
